@@ -31,7 +31,7 @@ def generate_text(skill_category, data):
             generated_text = event.message
             response += generated_text.content
 
-    history_messages = user_message.content + "\n" + response
+    history_messages += user_message.content + "\n" + response
     print(history_messages)
     return response
 

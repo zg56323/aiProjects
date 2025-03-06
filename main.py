@@ -4,7 +4,7 @@ from utils import generate_text, check_student_id_exists
 st.header("大连医科大学物理学习助手")
 with st.sidebar:
     # 学号登录部分
-    student_id = st.text_input("请输入学号", key="student_id")
+    student_id = st.text_input("请输入学号", key="student_id", type="password")
     login_button = st.button("登录")
 
     if 'is_logged_in' not in st.session_state:
