@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="ee7a192f-5fa8-42a6-a70a-60387daf056f" name="studentDataSet Mapping">
+      <data-sources db="08ed2501-a75f-4c60-8944-48da4ce0a0b6" />
+    </mapping>
+  </component>
+</project>

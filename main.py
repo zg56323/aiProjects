@@ -1,7 +1,5 @@
 import streamlit as st
-import pprint
-from utils import generate_text
-from coze_model import CozeAgentOutput, skill_to_command_id
+from utils import generate_text, check_student_id_exists
 
 st.header("大连医科大学物理学习助手")
 with st.sidebar:
@@ -15,17 +13,12 @@ with st.sidebar:
     if login_button:
         if student_id:
             try:
-                result, response = generate_text("权限管理", student_id)
-                # 假设成功信息包含在 generated_texts 中
-                success_keywords = ["成功", "Success"]
-                success = any(any(keyword in text for keyword in success_keywords) for text in result.generated_texts)
-                if success:
+                result = check_student_id_exists(student_id)
+                if result is not None:
                     st.session_state.is_logged_in = True
                     st.success("登录成功！")
                 else:
                     st.error("登录失败，请检查学号。")
-                st.write("详细响应信息:")
-                st.code(pprint.pformat(response), language="json")
             except Exception as e:
                 st.error(f"登录过程中出现错误: {e}")
         else:
@@ -43,7 +36,7 @@ skill_category = st.selectbox(
         "笔记管理 - 记笔记",
         "笔记管理 - 查笔记",
         "笔记管理 - 删除笔记",
-        "知识图谱",
+        "思维导图",
         "论文查询",
         "答疑"
     ]
@@ -63,8 +56,7 @@ if submit:
 
     with st.spinner("AI 正在处理中，请稍等..."):
         try:
-            result, response = generate_text(skill_category, data)
-            result = CozeAgentOutput(**result.dict())
+            result = generate_text(skill_category, data)
         except Exception as e:
             st.error(f"处理过程中出现错误: {e}")
             st.write("异常信息详细内容：")
@@ -73,12 +65,4 @@ if submit:
 
     st.divider()
     st.markdown("#### 生成结果")
-    for text in result.generated_texts:
-        st.write(text)
-    st.markdown("#### 总结")
-    st.write(result.summary)
-    st.markdown("#### 快捷命令ID")
-    st.write(result.commandId)
-
-    st.write("详细响应信息:")
-    st.code(pprint.pformat(response), language="json")
+    st.write(result)
